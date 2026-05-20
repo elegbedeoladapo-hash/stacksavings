@@ -1,4 +1,3 @@
-import { useState } from "react"
 import { ToolEntry, ToolName } from "@/types"
 import { PRICING_DATA } from "@/lib/pricing-data"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
@@ -26,8 +25,6 @@ const TOOL_OPTIONS: { value: ToolName; label: string }[] = [
 
 export function ToolRow({ entry, index, onChange, onRemove }: ToolRowProps) {
   const plans = PRICING_DATA[entry.tool]?.plans ?? []
-  const [spendStr, setSpendStr] = useState(String(entry.monthlySpend))
-  const [seatsStr, setSeatsStr] = useState(String(entry.seats))
 
   const handleToolChange = (value: ToolName) => {
     const firstPlan = PRICING_DATA[value]?.plans[0]?.name ?? ""
@@ -35,18 +32,18 @@ export function ToolRow({ entry, index, onChange, onRemove }: ToolRowProps) {
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-4 gap-4 p-4 border rounded-lg bg-card relative">
+    <div className="grid grid-cols-1 md:grid-cols-4 gap-4 p-4 border border-slate-700 rounded-lg bg-slate-800/50 relative">
 
       {/* Tool Name */}
       <div className="space-y-1">
-        <Label>Tool</Label>
+        <Label className="text-slate-300">Tool</Label>
         <Select value={entry.tool} onValueChange={handleToolChange}>
-          <SelectTrigger>
+          <SelectTrigger className="bg-slate-800 border-slate-600 text-white">
             <SelectValue placeholder="Select tool" />
           </SelectTrigger>
-          <SelectContent>
+          <SelectContent className="bg-slate-800 border-slate-600">
             {TOOL_OPTIONS.map((t) => (
-              <SelectItem key={t.value} value={t.value}>
+              <SelectItem key={t.value} value={t.value} className="text-white hover:bg-slate-700">
                 {t.label}
               </SelectItem>
             ))}
@@ -56,17 +53,17 @@ export function ToolRow({ entry, index, onChange, onRemove }: ToolRowProps) {
 
       {/* Plan */}
       <div className="space-y-1">
-        <Label>Plan</Label>
+        <Label className="text-slate-300">Plan</Label>
         <Select
           value={entry.plan}
           onValueChange={(val) => onChange(index, { ...entry, plan: val })}
         >
-          <SelectTrigger>
+          <SelectTrigger className="bg-slate-800 border-slate-600 text-white">
             <SelectValue placeholder="Select plan" />
           </SelectTrigger>
-          <SelectContent>
+          <SelectContent className="bg-slate-800 border-slate-600">
             {plans.map((p) => (
-              <SelectItem key={p.name} value={p.name}>
+              <SelectItem key={p.name} value={p.name} className="text-white hover:bg-slate-700">
                 {p.name}
               </SelectItem>
             ))}
@@ -76,46 +73,40 @@ export function ToolRow({ entry, index, onChange, onRemove }: ToolRowProps) {
 
       {/* Monthly Spend */}
       <div className="space-y-1">
-        <Label>Monthly Spend ($)</Label>
+        <Label className="text-slate-300">Monthly Spend ($)</Label>
         <Input
           type="text"
           inputMode="numeric"
-          value={spendStr}
-          onFocus={() => setSpendStr("")}
+          value={entry.monthlySpend === 0 ? "" : String(entry.monthlySpend)}
           onChange={(e) => {
             const val = e.target.value.replace(/[^0-9]/g, "")
-            setSpendStr(val)
             onChange(index, {
               ...entry,
               monthlySpend: Number(val) || 0,
             })
           }}
-          onBlur={() => {
-            if (spendStr === "") setSpendStr("0")
-          }}
+          onFocus={(e) => e.target.select()}
+          className="bg-slate-800 border-slate-600 text-white placeholder:text-slate-500"
           placeholder="0"
         />
       </div>
 
       {/* Seats */}
       <div className="space-y-1">
-        <Label>Seats</Label>
+        <Label className="text-slate-300">Seats</Label>
         <Input
           type="text"
           inputMode="numeric"
-          value={seatsStr}
-          onFocus={() => setSeatsStr("")}
+          value={entry.seats === 1 ? "" : String(entry.seats)}
           onChange={(e) => {
             const val = e.target.value.replace(/[^0-9]/g, "")
-            setSeatsStr(val)
             onChange(index, {
               ...entry,
               seats: Number(val) || 1,
             })
           }}
-          onBlur={() => {
-            if (seatsStr === "") setSeatsStr("1")
-          }}
+          onFocus={(e) => e.target.select()}
+          className="bg-slate-800 border-slate-600 text-white placeholder:text-slate-500"
           placeholder="1"
         />
       </div>
@@ -123,7 +114,7 @@ export function ToolRow({ entry, index, onChange, onRemove }: ToolRowProps) {
       {/* Remove Button */}
       <button
         onClick={() => onRemove(index)}
-        className="absolute top-2 right-2 text-muted-foreground hover:text-destructive"
+        className="absolute top-2 right-2 text-slate-500 hover:text-red-400"
         aria-label="Remove tool"
       >
         <X size={16} />

@@ -32,7 +32,6 @@ interface AuditFormProps {
 export function AuditForm({ onSubmit }: AuditFormProps) {
   const [formData, setFormData] = useState<AuditFormData>(defaultFormData)
 
-  // Load from localStorage on mount
   useEffect(() => {
     const saved = localStorage.getItem(STORAGE_KEY)
     if (saved) {
@@ -44,7 +43,6 @@ export function AuditForm({ onSubmit }: AuditFormProps) {
     }
   }, [])
 
-  // Save to localStorage on every change
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(formData))
   }, [formData])
@@ -73,10 +71,12 @@ export function AuditForm({ onSubmit }: AuditFormProps) {
   }
 
   return (
-    <Card className="w-full max-w-3xl mx-auto">
+    <Card className="w-full max-w-3xl mx-auto bg-slate-900/80 border-slate-700">
       <CardHeader>
-        <CardTitle className="text-2xl">Audit Your AI Spend</CardTitle>
-        <CardDescription>
+        <CardTitle className="text-2xl text-white">
+          Audit Your AI Spend
+        </CardTitle>
+        <CardDescription className="text-slate-400">
           Add the AI tools your team pays for. We'll find where you're
           overspending and what to do about it.
         </CardDescription>
@@ -97,14 +97,18 @@ export function AuditForm({ onSubmit }: AuditFormProps) {
         </div>
 
         {/* Add Tool Button */}
-        <Button variant="outline" onClick={handleAddTool} className="w-full">
+        <Button
+          variant="outline"
+          onClick={handleAddTool}
+          className="w-full border-slate-600 bg-slate-800/50 text-slate-300 hover:bg-slate-700 hover:text-white"
+        >
           <Plus size={16} className="mr-2" />
           Add Another Tool
         </Button>
 
         {/* Team Size */}
         <div className="space-y-1">
-          <Label>Team Size</Label>
+          <Label className="text-slate-300">Team Size</Label>
           <Input
             type="text"
             inputMode="numeric"
@@ -114,14 +118,14 @@ export function AuditForm({ onSubmit }: AuditFormProps) {
               setFormData({ ...formData, teamSize: Number(val) || 1 })
             }}
             onFocus={(e) => e.target.select()}
-            className="max-w-xs"
+            className="max-w-xs bg-slate-800 border-slate-600 text-white placeholder:text-slate-500"
             placeholder="1"
           />
         </div>
 
         {/* Primary Use Case */}
         <div className="space-y-1">
-          <Label>Primary Use Case</Label>
+          <Label className="text-slate-300">Primary Use Case</Label>
           <Select
             value={formData.primaryUseCase}
             onValueChange={(val) =>
@@ -131,15 +135,15 @@ export function AuditForm({ onSubmit }: AuditFormProps) {
               })
             }
           >
-            <SelectTrigger className="max-w-xs">
+            <SelectTrigger className="max-w-xs bg-slate-800 border-slate-600 text-white">
               <SelectValue />
             </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="coding">Coding</SelectItem>
-              <SelectItem value="writing">Writing</SelectItem>
-              <SelectItem value="data">Data Analysis</SelectItem>
-              <SelectItem value="research">Research</SelectItem>
-              <SelectItem value="mixed">Mixed</SelectItem>
+            <SelectContent className="bg-slate-800 border-slate-600">
+              <SelectItem value="coding" className="text-white hover:bg-slate-700">Coding</SelectItem>
+              <SelectItem value="writing" className="text-white hover:bg-slate-700">Writing</SelectItem>
+              <SelectItem value="data" className="text-white hover:bg-slate-700">Data Analysis</SelectItem>
+              <SelectItem value="research" className="text-white hover:bg-slate-700">Research</SelectItem>
+              <SelectItem value="mixed" className="text-white hover:bg-slate-700">Mixed</SelectItem>
             </SelectContent>
           </Select>
         </div>
@@ -147,7 +151,7 @@ export function AuditForm({ onSubmit }: AuditFormProps) {
         {/* Submit */}
         <Button
           onClick={handleSubmit}
-          className="w-full"
+          className="w-full bg-emerald-500 hover:bg-emerald-400 text-white font-semibold"
           disabled={formData.tools.length === 0}
         >
           Run My Audit →
