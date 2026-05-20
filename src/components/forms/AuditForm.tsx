@@ -8,7 +8,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Input } from "@/components/ui/input"
-import { Plus } from "lucide-react"
+import { Plus, AlertCircle } from "lucide-react"
 
 const STORAGE_KEY = "stacksavings_form_data"
 
@@ -31,6 +31,7 @@ interface AuditFormProps {
 
 export function AuditForm({ onSubmit }: AuditFormProps) {
   const [formData, setFormData] = useState<AuditFormData>(defaultFormData)
+  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
     const saved = localStorage.getItem(STORAGE_KEY)
@@ -51,6 +52,7 @@ export function AuditForm({ onSubmit }: AuditFormProps) {
     const tools = [...formData.tools]
     tools[index] = updated
     setFormData({ ...formData, tools })
+    setError(null)
   }
 
   const handleToolRemove = (index: number) => {
@@ -66,7 +68,16 @@ export function AuditForm({ onSubmit }: AuditFormProps) {
   }
 
   const handleSubmit = () => {
-    if (formData.tools.length === 0) return
+    if (formData.tools.length === 0) {
+      setError("Please add at least one AI tool.")
+      return
+    }
+    const hasSpend = formData.tools.some((t) => t.monthlySpend > 0)
+    if (!hasSpend) {
+      setError("Please enter your monthly spend for at least one tool.")
+      return
+    }
+    setError(null)
     onSubmit(formData)
   }
 
@@ -147,6 +158,19 @@ export function AuditForm({ onSubmit }: AuditFormProps) {
             </SelectContent>
           </Select>
         </div>
+
+        {/* Error message */}
+        {error && (
+          <div className="flex items-center gap-2 px-4 py-3 rounded-lg border"
+            style={{
+              background: "rgba(239,68,68,0.08)",
+              borderColor: "rgba(239,68,68,0.25)",
+              color: "#f87171"
+            }}>
+            <AlertCircle size={16} />
+            <p className="text-sm">{error}</p>
+          </div>
+        )}
 
         {/* Submit */}
         <Button
