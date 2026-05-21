@@ -1,24 +1,10 @@
 import { AuditResult, ToolRecommendation } from "@/types"
 import { PRICING_DATA } from "@/lib/pricing-data"
+import { LeadCapture } from "./LeadCapture"
 
 interface AuditResultsProps {
   result: AuditResult
   onReset: () => void
-}
-
-function SavingsBadge({ amount }: { amount: number }) {
-  if (amount <= 0) return (
-    <span className="text-xs px-2 py-1 rounded-full font-medium"
-      style={{ background: "rgba(16,185,129,0.1)", color: "#10b981" }}>
-      ✓ Optimal
-    </span>
-  )
-  return (
-    <span className="text-xs px-2 py-1 rounded-full font-medium"
-      style={{ background: "rgba(239,68,68,0.1)", color: "#f87171" }}>
-      Save ${amount}/mo
-    </span>
-  )
 }
 
 function ToolCard({ rec }: { rec: ToolRecommendation }) {
@@ -26,60 +12,43 @@ function ToolCard({ rec }: { rec: ToolRecommendation }) {
   const isOptimal = rec.monthlySavings <= 0
 
   return (
-    <div className="p-5 rounded-xl border space-y-3"
-      style={{
-        background: isOptimal
-          ? "rgba(16,185,129,0.03)"
-          : "rgba(239,68,68,0.03)",
-        borderColor: isOptimal
-          ? "rgba(16,185,129,0.15)"
-          : "rgba(239,68,68,0.15)",
-      }}>
-
-      {/* Tool header */}
-      <div className="flex items-center justify-between">
+    <div style={{
+      background: "rgba(255,255,255,0.03)",
+      border: `1px solid ${isOptimal ? "rgba(16,185,129,0.2)" : "rgba(239,68,68,0.2)"}`,
+      borderRadius: "12px",
+      padding: "20px 24px",
+      marginBottom: "10px",
+    }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "10px" }}>
         <div>
-          <h3 className="font-semibold text-white text-sm">
-            {toolData.displayName}
-          </h3>
-          <p className="text-xs mt-0.5" style={{ color: "#64748b" }}>
-            Current: ${rec.currentSpend}/mo
-          </p>
+          <p style={{ color: "white", fontWeight: 600, fontSize: "15px", marginBottom: "2px" }}>{toolData.displayName}</p>
+          <p style={{ color: "#475569", fontSize: "13px" }}>Current: ${rec.currentSpend}/mo</p>
         </div>
-        <SavingsBadge amount={rec.monthlySavings} />
+        <span style={{
+          fontSize: "12px", fontWeight: 500, padding: "4px 10px", borderRadius: "999px",
+          background: isOptimal ? "rgba(16,185,129,0.1)" : "rgba(239,68,68,0.1)",
+          color: isOptimal ? "#10b981" : "#f87171",
+          whiteSpace: "nowrap",
+        }}>
+          {isOptimal ? "✓ Optimal" : `Save $${rec.monthlySavings}/mo`}
+        </span>
       </div>
 
-      {/* Recommendation */}
-      <div className="space-y-1">
-        <p className="text-sm font-medium" style={{ color: "#e2e8f0" }}>
-          {rec.recommendedAction}
-        </p>
-        <p className="text-xs leading-relaxed" style={{ color: "#64748b" }}>
-          {rec.reason}
-        </p>
-      </div>
+      <p style={{ color: "#e2e8f0", fontSize: "14px", fontWeight: 500, marginBottom: "4px" }}>{rec.recommendedAction}</p>
+      <p style={{ color: "#475569", fontSize: "13px", lineHeight: 1.6 }}>{rec.reason}</p>
 
-      {/* Savings numbers */}
       {rec.monthlySavings > 0 && (
-        <div className="flex items-center gap-4 pt-1">
-          <div>
-            <p className="text-xs" style={{ color: "#64748b" }}>Monthly savings</p>
-            <p className="text-sm font-bold" style={{ color: "#10b981" }}>
-              ${rec.monthlySavings}/mo
-            </p>
-          </div>
-          <div>
-            <p className="text-xs" style={{ color: "#64748b" }}>Annual savings</p>
-            <p className="text-sm font-bold" style={{ color: "#10b981" }}>
-              ${rec.annualSavings}/yr
-            </p>
-          </div>
-          <div>
-            <p className="text-xs" style={{ color: "#64748b" }}>New spend</p>
-            <p className="text-sm font-bold text-white">
-              ${rec.estimatedNewSpend}/mo
-            </p>
-          </div>
+        <div style={{ display: "flex", gap: "24px", marginTop: "14px", paddingTop: "14px", borderTop: "1px solid rgba(255,255,255,0.06)" }}>
+          {[
+            { label: "Monthly savings", value: `$${rec.monthlySavings}/mo`, color: "#10b981" },
+            { label: "Annual savings", value: `$${rec.annualSavings}/yr`, color: "#10b981" },
+            { label: "New spend", value: `$${rec.estimatedNewSpend}/mo`, color: "white" },
+          ].map(item => (
+            <div key={item.label}>
+              <p style={{ color: "#475569", fontSize: "11px", marginBottom: "2px" }}>{item.label}</p>
+              <p style={{ color: item.color, fontSize: "14px", fontWeight: 700 }}>{item.value}</p>
+            </div>
+          ))}
         </div>
       )}
     </div>
@@ -87,105 +56,87 @@ function ToolCard({ rec }: { rec: ToolRecommendation }) {
 }
 
 export function AuditResults({ result, onReset }: AuditResultsProps) {
-  const isHighSavings = result.totalMonthlySavings >= 500
   const isOptimal = result.totalMonthlySavings === 0
+  const isHighSavings = result.totalMonthlySavings >= 500
 
   return (
-    <div className="space-y-8">
+    <div style={{ paddingBottom: "60px" }}>
 
-      {/* Hero savings */}
-      <div className="text-center space-y-3 py-8">
-        <div className="inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-sm font-medium border"
-          style={{ background: "rgba(16,185,129,0.08)", borderColor: "rgba(16,185,129,0.25)", color: "#34d399" }}>
-          ✦ Audit Complete
-        </div>
+      {/* Hero */}
+      <div style={{ textAlign: "center", padding: "40px 0 32px" }}>
+        <span style={{
+          display: "inline-flex", alignItems: "center", gap: "6px",
+          background: "rgba(16,185,129,0.08)", border: "1px solid rgba(16,185,129,0.25)",
+          color: "#34d399", fontSize: "13px", fontWeight: 500,
+          padding: "6px 14px", borderRadius: "999px", marginBottom: "20px",
+        }}>✦ Audit Complete</span>
 
         {isOptimal ? (
           <>
-            <h2 className="text-5xl font-black text-white">
+            <h2 style={{ color: "white", fontSize: "48px", fontWeight: 900, marginBottom: "12px" }}>
               You're spending <span style={{ color: "#10b981" }}>well! 🎉</span>
             </h2>
-            <p className="text-slate-400 max-w-md mx-auto">
-              Your AI stack looks optimized. We didn't find any significant
-              savings opportunities based on your current setup.
+            <p style={{ color: "#64748b", maxWidth: "420px", margin: "0 auto", lineHeight: 1.6 }}>
+              Your AI stack looks optimized. No significant savings found.
             </p>
           </>
         ) : (
           <>
-            <p className="text-slate-400 text-sm uppercase tracking-widest">
-              Your team could save
-            </p>
-            <h2 className="text-7xl font-black text-white">
-              ${result.totalMonthlySavings}
-              <span className="text-3xl" style={{ color: "#10b981" }}>/mo</span>
+            <p style={{ color: "#64748b", fontSize: "12px", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: "8px" }}>Your team could save</p>
+            <h2 style={{ color: "white", fontSize: "72px", fontWeight: 900, lineHeight: 1, marginBottom: "8px" }}>
+              ${result.totalMonthlySavings}<span style={{ color: "#10b981", fontSize: "32px" }}>/mo</span>
             </h2>
-            <p className="text-xl" style={{ color: "#475569" }}>
-              That's <span className="text-white font-bold">${result.totalAnnualSavings}</span> saved every year
+            <p style={{ color: "#475569", fontSize: "18px" }}>
+              That's <span style={{ color: "white", fontWeight: 700 }}>${result.totalAnnualSavings}</span> saved every year
             </p>
           </>
         )}
       </div>
 
-      {/* Per tool breakdown */}
-      <div className="space-y-3">
-        <h3 className="text-sm uppercase tracking-widest font-medium" style={{ color: "#475569" }}>
+      {/* Per-tool breakdown */}
+      <div style={{ marginBottom: "24px" }}>
+        <p style={{ color: "#334155", fontSize: "11px", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: "12px", fontWeight: 500 }}>
           Per-tool breakdown
-        </h3>
-        {result.recommendations.map((rec, i) => (
-          <ToolCard key={i} rec={rec} />
-        ))}
+        </p>
+        {result.recommendations.map((rec, i) => <ToolCard key={i} rec={rec} />)}
       </div>
 
       {/* Credex CTA for high savings */}
       {isHighSavings && (
-        <div className="p-6 rounded-xl border text-center space-y-4"
-          style={{
-            background: "linear-gradient(135deg, rgba(16,185,129,0.1), rgba(59,130,246,0.1))",
-            borderColor: "rgba(16,185,129,0.3)"
+        <div style={{
+          background: "linear-gradient(135deg, rgba(16,185,129,0.08), rgba(59,130,246,0.08))",
+          border: "1px solid rgba(16,185,129,0.25)", borderRadius: "16px",
+          padding: "32px", textAlign: "center", marginBottom: "16px",
+        }}>
+          <p style={{ color: "#34d399", fontSize: "11px", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: "8px" }}>Maximize your savings</p>
+          <h3 style={{ color: "white", fontSize: "22px", fontWeight: 700, marginBottom: "10px" }}>Save even more with Credex</h3>
+          <p style={{ color: "#94a3b8", fontSize: "14px", maxWidth: "400px", margin: "0 auto 20px", lineHeight: 1.6 }}>
+            Credex sells discounted AI infrastructure credits — Cursor, Claude, ChatGPT Enterprise at substantial discounts.
+          </p>
+          <a href="https://credex.rocks" target="_blank" style={{
+            display: "inline-block", padding: "12px 28px", borderRadius: "10px",
+            background: "linear-gradient(135deg, #10b981, #0d9488)",
+            color: "white", fontWeight: 600, fontSize: "14px", textDecoration: "none",
           }}>
-          <p className="text-xs uppercase tracking-widest" style={{ color: "#34d399" }}>
-            Maximize your savings
-          </p>
-          <h3 className="text-2xl font-bold text-white">
-            Save even more with Credex
-          </h3>
-          <p className="text-sm max-w-md mx-auto" style={{ color: "#94a3b8" }}>
-            Credex sells discounted AI infrastructure credits — Cursor, Claude,
-            ChatGPT Enterprise, and others at substantial discounts.
-          </p>
-          <a href="https://credex.rocks" target="_blank"
-            className="inline-block px-6 py-3 rounded-lg font-semibold text-white text-sm"
-            style={{ background: "linear-gradient(135deg, #10b981, #0d9488)" }}>
             Book a free Credex consultation →
           </a>
         </div>
       )}
 
-      {/* Low savings CTA */}
-      {isOptimal && (
-        <div className="p-6 rounded-xl border text-center space-y-3"
-          style={{ background: "rgba(16,185,129,0.03)", borderColor: "rgba(16,185,129,0.15)" }}>
-          <h3 className="text-lg font-semibold text-white">
-            Stay ahead of new optimizations
-          </h3>
-          <p className="text-sm" style={{ color: "#64748b" }}>
-            AI tool pricing changes fast. We'll notify you when new savings
-            opportunities apply to your stack.
-          </p>
-        </div>
-      )}
+      {/* Lead Capture */}
+      <div style={{
+        background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)",
+        borderRadius: "16px", padding: "28px", marginBottom: "16px",
+      }}>
+        <LeadCapture auditId={result.id} totalMonthlySavings={result.totalMonthlySavings} isOptimal={result.isOptimal} />
+      </div>
 
       {/* Reset */}
-      <div className="text-center pb-8">
-        <button
-          onClick={onReset}
-          className="text-sm underline underline-offset-4"
-          style={{ color: "#475569" }}
-        >
+      <div style={{ textAlign: "center" }}>
+        <button onClick={onReset} style={{ background: "none", border: "none", color: "#475569", fontSize: "14px", cursor: "pointer", textDecoration: "underline" }}>
           ← Run another audit
         </button>
       </div>
-
     </div>
   )
 }

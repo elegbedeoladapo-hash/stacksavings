@@ -2,7 +2,6 @@ import { ToolEntry, ToolName } from "@/types"
 import { PRICING_DATA } from "@/lib/pricing-data"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
 import { X } from "lucide-react"
 
 interface ToolRowProps {
@@ -32,94 +31,75 @@ export function ToolRow({ entry, index, onChange, onRemove }: ToolRowProps) {
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-4 gap-4 p-4 border border-slate-700 rounded-lg bg-slate-800/50 relative">
-
-      {/* Tool Name */}
-      <div className="space-y-1">
-        <Label className="text-slate-300">Tool</Label>
-        <Select value={entry.tool} onValueChange={handleToolChange}>
-          <SelectTrigger className="bg-slate-800 border-slate-600 text-white">
-            <SelectValue placeholder="Select tool" />
-          </SelectTrigger>
-          <SelectContent className="bg-slate-800 border-slate-600">
-            {TOOL_OPTIONS.map((t) => (
-              <SelectItem key={t.value} value={t.value} className="text-white hover:bg-slate-700">
-                {t.label}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
-
-      {/* Plan */}
-      <div className="space-y-1">
-        <Label className="text-slate-300">Plan</Label>
-        <Select
-          value={entry.plan}
-          onValueChange={(val) => onChange(index, { ...entry, plan: val })}
-        >
-          <SelectTrigger className="bg-slate-800 border-slate-600 text-white">
-            <SelectValue placeholder="Select plan" />
-          </SelectTrigger>
-          <SelectContent className="bg-slate-800 border-slate-600">
-            {plans.map((p) => (
-              <SelectItem key={p.name} value={p.name} className="text-white hover:bg-slate-700">
-                {p.name}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
-
-      {/* Monthly Spend */}
-      <div className="space-y-1">
-        <Label className="text-slate-300">Monthly Spend ($)</Label>
-        <Input
-          type="text"
-          inputMode="numeric"
-          value={entry.monthlySpend === 0 ? "" : String(entry.monthlySpend)}
-          onChange={(e) => {
-            const val = e.target.value.replace(/[^0-9]/g, "")
-            onChange(index, {
-              ...entry,
-              monthlySpend: Number(val) || 0,
-            })
-          }}
-          onFocus={(e) => e.target.select()}
-          className="bg-slate-800 border-slate-600 text-white placeholder:text-slate-500"
-          placeholder="0"
-        />
-      </div>
-
-      {/* Seats */}
-      <div className="space-y-1">
-        <Label className="text-slate-300">Seats</Label>
-        <Input
-          type="text"
-          inputMode="numeric"
-          value={entry.seats === 1 ? "" : String(entry.seats)}
-          onChange={(e) => {
-            const val = e.target.value.replace(/[^0-9]/g, "")
-            onChange(index, {
-              ...entry,
-              seats: Number(val) || 1,
-            })
-          }}
-          onFocus={(e) => e.target.select()}
-          className="bg-slate-800 border-slate-600 text-white placeholder:text-slate-500"
-          placeholder="1"
-        />
-      </div>
-
-      {/* Remove Button */}
+    <div style={{
+      background: "rgba(255,255,255,0.04)",
+      border: "1px solid rgba(255,255,255,0.08)",
+      borderRadius: "12px",
+      padding: "16px 20px",
+      position: "relative",
+      marginBottom: "10px",
+    }}>
       <button
         onClick={() => onRemove(index)}
-        className="absolute top-2 right-2 text-slate-500 hover:text-red-400"
-        aria-label="Remove tool"
+        style={{ position: "absolute", top: "14px", right: "14px", background: "none", border: "none", cursor: "pointer", color: "#475569", padding: "2px" }}
+        aria-label="Remove"
       >
-        <X size={16} />
+        <X size={14} />
       </button>
 
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "14px", marginBottom: "14px" }}>
+        <div>
+          <p style={{ color: "#64748b", fontSize: "11px", fontWeight: 500, marginBottom: "6px", textTransform: "uppercase", letterSpacing: "0.05em" }}>Tool</p>
+          <Select value={entry.tool} onValueChange={handleToolChange}>
+            <SelectTrigger style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.1)", color: "white", borderRadius: "8px", height: "40px" }}>
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent style={{ background: "#1e293b", border: "1px solid rgba(255,255,255,0.1)" }}>
+              {TOOL_OPTIONS.map(t => (
+                <SelectItem key={t.value} value={t.value} style={{ color: "white" }}>{t.label}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+        <div>
+          <p style={{ color: "#64748b", fontSize: "11px", fontWeight: 500, marginBottom: "6px", textTransform: "uppercase", letterSpacing: "0.05em" }}>Plan</p>
+          <Select value={entry.plan} onValueChange={(val) => onChange(index, { ...entry, plan: val })}>
+            <SelectTrigger style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.1)", color: "white", borderRadius: "8px", height: "40px" }}>
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent style={{ background: "#1e293b", border: "1px solid rgba(255,255,255,0.1)" }}>
+              {plans.map(p => (
+                <SelectItem key={p.name} value={p.name} style={{ color: "white" }}>{p.name}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+      </div>
+
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "14px" }}>
+        <div>
+          <p style={{ color: "#64748b", fontSize: "11px", fontWeight: 500, marginBottom: "6px", textTransform: "uppercase", letterSpacing: "0.05em" }}>Monthly Spend ($)</p>
+          <Input
+            type="text" inputMode="numeric"
+            value={entry.monthlySpend === 0 ? "" : String(entry.monthlySpend)}
+            onChange={(e) => { const val = e.target.value.replace(/[^0-9]/g, ""); onChange(index, { ...entry, monthlySpend: Number(val) || 0 }) }}
+            onFocus={(e) => e.target.select()}
+            placeholder="0"
+            style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.1)", color: "white", borderRadius: "8px", height: "40px" }}
+          />
+        </div>
+        <div>
+          <p style={{ color: "#64748b", fontSize: "11px", fontWeight: 500, marginBottom: "6px", textTransform: "uppercase", letterSpacing: "0.05em" }}>Seats</p>
+          <Input
+            type="text" inputMode="numeric"
+            value={entry.seats === 1 ? "" : String(entry.seats)}
+            onChange={(e) => { const val = e.target.value.replace(/[^0-9]/g, ""); onChange(index, { ...entry, seats: Number(val) || 1 }) }}
+            onFocus={(e) => e.target.select()}
+            placeholder="1"
+            style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.1)", color: "white", borderRadius: "8px", height: "40px" }}
+          />
+        </div>
+      </div>
     </div>
   )
 }
