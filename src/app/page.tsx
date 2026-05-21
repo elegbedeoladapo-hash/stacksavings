@@ -9,6 +9,21 @@ import { runAudit } from "@/lib/audit-engine"
 export default function Home() {
   const [auditResult, setAuditResult] = useState<AuditResult | null>(null)
 
+  const handleSubmit = async (data: AuditFormData) => {
+    const result = runAudit(data)
+    setAuditResult(result)
+    // Save to Supabase in background — don't block the UI
+    try {
+      await fetch("/api/audit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(result),
+      })
+    } catch {
+      // fail silently — audit still works without saving
+    }
+  }
+
   return (
     <main className="min-h-screen relative overflow-hidden"
       style={{ background: "linear-gradient(135deg, #020817 0%, #0a1628 50%, #020817 100%)" }}>
@@ -81,7 +96,7 @@ export default function Home() {
               </div>
 
               {/* Form */}
-              <AuditForm onSubmit={(data: AuditFormData) => setAuditResult(runAudit(data))} />
+              <AuditForm onSubmit={handleSubmit} />
 
               {/* Social proof */}
               <div style={{ textAlign: "center", paddingTop: "8px" }}>
