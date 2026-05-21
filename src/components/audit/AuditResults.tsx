@@ -1,3 +1,5 @@
+"use client"
+
 import { AuditResult, ToolRecommendation } from "@/types"
 import { PRICING_DATA } from "@/lib/pricing-data"
 import { LeadCapture } from "./LeadCapture"
@@ -58,6 +60,12 @@ function ToolCard({ rec }: { rec: ToolRecommendation }) {
 export function AuditResults({ result, onReset }: AuditResultsProps) {
   const isOptimal = result.totalMonthlySavings === 0
   const isHighSavings = result.totalMonthlySavings >= 500
+  const shareUrl = typeof window !== "undefined" ? `${window.location.origin}/audit/${result.id}` : ""
+
+  const handleCopyLink = () => {
+    navigator.clipboard.writeText(shareUrl)
+    alert("Link copied!")
+  }
 
   return (
     <div style={{ paddingBottom: "60px" }}>
@@ -84,7 +92,8 @@ export function AuditResults({ result, onReset }: AuditResultsProps) {
           <>
             <p style={{ color: "#64748b", fontSize: "12px", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: "8px" }}>Your team could save</p>
             <h2 style={{ color: "white", fontSize: "72px", fontWeight: 900, lineHeight: 1, marginBottom: "8px" }}>
-              ${result.totalMonthlySavings}<span style={{ color: "#10b981", fontSize: "32px" }}>/mo</span>
+              ${result.totalMonthlySavings}
+              <span style={{ color: "#10b981", fontSize: "32px" }}>/mo</span>
             </h2>
             <p style={{ color: "#475569", fontSize: "18px" }}>
               That's <span style={{ color: "white", fontWeight: 700 }}>${result.totalAnnualSavings}</span> saved every year
@@ -131,12 +140,24 @@ export function AuditResults({ result, onReset }: AuditResultsProps) {
         <LeadCapture auditId={result.id} totalMonthlySavings={result.totalMonthlySavings} isOptimal={result.isOptimal} />
       </div>
 
-      {/* Reset */}
-      <div style={{ textAlign: "center" }}>
+      {/* Share + Reset */}
+      <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "12px" }}>
+        <button
+          onClick={handleCopyLink}
+          style={{
+            padding: "12px 28px", borderRadius: "10px",
+            border: "1px solid rgba(16,185,129,0.3)",
+            background: "rgba(16,185,129,0.05)",
+            color: "#34d399", fontSize: "14px", fontWeight: 500, cursor: "pointer",
+          }}
+        >
+          🔗 Copy shareable link
+        </button>
         <button onClick={onReset} style={{ background: "none", border: "none", color: "#475569", fontSize: "14px", cursor: "pointer", textDecoration: "underline" }}>
           ← Run another audit
         </button>
       </div>
+
     </div>
   )
 }
