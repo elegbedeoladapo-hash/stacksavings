@@ -1,5 +1,6 @@
 "use client"
 
+import { useState, useEffect } from "react"
 import { AuditResult, ToolRecommendation } from "@/types"
 import { PRICING_DATA } from "@/lib/pricing-data"
 import { LeadCapture } from "./LeadCapture"
@@ -17,9 +18,7 @@ function ToolCard({ rec }: { rec: ToolRecommendation }) {
     <div style={{
       background: "rgba(255,255,255,0.03)",
       border: `1px solid ${isOptimal ? "rgba(16,185,129,0.2)" : "rgba(239,68,68,0.2)"}`,
-      borderRadius: "12px",
-      padding: "20px 24px",
-      marginBottom: "10px",
+      borderRadius: "12px", padding: "20px 24px", marginBottom: "10px",
     }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "10px" }}>
         <div>
@@ -29,16 +28,13 @@ function ToolCard({ rec }: { rec: ToolRecommendation }) {
         <span style={{
           fontSize: "12px", fontWeight: 500, padding: "4px 10px", borderRadius: "999px",
           background: isOptimal ? "rgba(16,185,129,0.1)" : "rgba(239,68,68,0.1)",
-          color: isOptimal ? "#10b981" : "#f87171",
-          whiteSpace: "nowrap",
+          color: isOptimal ? "#10b981" : "#f87171", whiteSpace: "nowrap",
         }}>
           {isOptimal ? "✓ Optimal" : `Save $${rec.monthlySavings}/mo`}
         </span>
       </div>
-
       <p style={{ color: "#e2e8f0", fontSize: "14px", fontWeight: 500, marginBottom: "4px" }}>{rec.recommendedAction}</p>
       <p style={{ color: "#475569", fontSize: "13px", lineHeight: 1.6 }}>{rec.reason}</p>
-
       {rec.monthlySavings > 0 && (
         <div style={{ display: "flex", gap: "24px", marginTop: "14px", paddingTop: "14px", borderTop: "1px solid rgba(255,255,255,0.06)" }}>
           {[
@@ -61,6 +57,27 @@ export function AuditResults({ result, onReset }: AuditResultsProps) {
   const isOptimal = result.totalMonthlySavings === 0
   const isHighSavings = result.totalMonthlySavings >= 500
   const shareUrl = typeof window !== "undefined" ? `${window.location.origin}/audit/${result.id}` : ""
+  const [summary, setSummary] = useState<string | null>(null)
+  const [summaryLoading, setSummaryLoading] = useState(true)
+
+  useEffect(() => {
+    const fetchSummary = async () => {
+      try {
+        const res = await fetch("/api/summary", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(result),
+        })
+        const data = await res.json()
+        setSummary(data.summary)
+      } catch {
+        setSummary(null)
+      } finally {
+        setSummaryLoading(false)
+      }
+    }
+    fetchSummary()
+  }, [result])
 
   const handleCopyLink = () => {
     navigator.clipboard.writeText(shareUrl)
@@ -102,6 +119,23 @@ export function AuditResults({ result, onReset }: AuditResultsProps) {
         )}
       </div>
 
+      {/* AI Summary */}
+      <div style={{
+        background: "rgba(16,185,129,0.05)", border: "1px solid rgba(16,185,129,0.15)",
+        borderRadius: "12px", padding: "20px 24px", marginBottom: "24px",
+      }}>
+        <p style={{ color: "#34d399", fontSize: "11px", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: "8px", fontWeight: 500 }}>
+          ✦ AI Analysis
+        </p>
+        {summaryLoading ? (
+          <p style={{ color: "#475569", fontSize: "14px" }}>Generating your personalized summary...</p>
+        ) : summary ? (
+          <p style={{ color: "#94a3b8", fontSize: "14px", lineHeight: 1.7 }}>{summary}</p>
+        ) : (
+          <p style={{ color: "#475569", fontSize: "14px" }}>Review the per-tool breakdown below for specific recommendations.</p>
+        )}
+      </div>
+
       {/* Per-tool breakdown */}
       <div style={{ marginBottom: "24px" }}>
         <p style={{ color: "#334155", fontSize: "11px", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: "12px", fontWeight: 500 }}>
@@ -110,7 +144,7 @@ export function AuditResults({ result, onReset }: AuditResultsProps) {
         {result.recommendations.map((rec, i) => <ToolCard key={i} rec={rec} />)}
       </div>
 
-      {/* Credex CTA for high savings */}
+      {/* Credex CTA */}
       {isHighSavings && (
         <div style={{
           background: "linear-gradient(135deg, rgba(16,185,129,0.08), rgba(59,130,246,0.08))",
@@ -142,15 +176,12 @@ export function AuditResults({ result, onReset }: AuditResultsProps) {
 
       {/* Share + Reset */}
       <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "12px" }}>
-        <button
-          onClick={handleCopyLink}
-          style={{
-            padding: "12px 28px", borderRadius: "10px",
-            border: "1px solid rgba(16,185,129,0.3)",
-            background: "rgba(16,185,129,0.05)",
-            color: "#34d399", fontSize: "14px", fontWeight: 500, cursor: "pointer",
-          }}
-        >
+        <button onClick={handleCopyLink} style={{
+          padding: "12px 28px", borderRadius: "10px",
+          border: "1px solid rgba(16,185,129,0.3)",
+          background: "rgba(16,185,129,0.05)",
+          color: "#34d399", fontSize: "14px", fontWeight: 500, cursor: "pointer",
+        }}>
           🔗 Copy shareable link
         </button>
         <button onClick={onReset} style={{ background: "none", border: "none", color: "#475569", fontSize: "14px", cursor: "pointer", textDecoration: "underline" }}>
