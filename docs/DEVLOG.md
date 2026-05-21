@@ -52,3 +52,34 @@
 - Build the audit results page
 - Connect form to audit engine
 - Start the shareable URL feature
+
+## Day 3 — 2026-05-21
+
+**Hours worked:** 6
+
+**What I did:**
+- Fixed .env.local configuration for Supabase connection
+- Connected audit engine to Supabase — audits now save on every submission
+- Built shareable URL feature — each audit gets a unique public page at /audit/[id]
+- Added Open Graph and Twitter card meta tags for link previews
+- Integrated Anthropic API for AI-generated audit summaries with graceful fallback
+- Built lead capture form — emails now save to Supabase leads table
+- Fixed RLS policy on leads table
+- Polished form and results page UI — dark glassmorphism design
+- Deployed to Vercel — live at https://stacksavings.vercel.app
+
+**What I learned:**
+- Next.js 15 requires params to be awaited in dynamic route handlers
+- Supabase RLS policies must be explicitly created for each operation type
+- Environment variables must be properly formatted (KEY=value) in .env.local
+- Graceful API fallbacks are better UX than hard failures
+
+**Blockers / what I'm stuck on:**
+- Anthropic API needs credits to generate real summaries — fallback working for now
+- Need to write all required markdown files before deadline
+
+**Plan for tomorrow:**
+- Set up CI/CD with GitHub Actions
+- Write minimum 5 tests for the audit engine
+- Start writing required markdown files (README, ARCHITECTURE, PRICING_DATA)
+- Message 3 people for user interviews
