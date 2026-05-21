@@ -55,31 +55,34 @@
 
 ## Day 3 — 2026-05-21
 
-**Hours worked:** 6
+**Hours worked:** 7
 
 **What I did:**
-- Fixed .env.local configuration for Supabase connection
+- Fixed .env.local configuration — Supabase was not saving due to missing variable names
 - Connected audit engine to Supabase — audits now save on every submission
-- Built shareable URL feature — each audit gets a unique public page at /audit/[id]
+- Fixed RLS policy on leads table — lead capture now works
+- Built shareable URL feature — /audit/[id] loads public audit from Supabase
 - Added Open Graph and Twitter card meta tags for link previews
 - Integrated Anthropic API for AI-generated audit summaries with graceful fallback
-- Built lead capture form — emails now save to Supabase leads table
-- Fixed RLS policy on leads table
 - Polished form and results page UI — dark glassmorphism design
+- Fixed mobile layout for tool row inputs
 - Deployed to Vercel — live at https://stacksavings.vercel.app
+- Set up CI/CD with GitHub Actions — runs lint and tests on every push
+- Wrote 7 passing tests for the audit engine
+- Wrote all 11 required markdown files
 
 **What I learned:**
 - Next.js 15 requires params to be awaited in dynamic route handlers
-- Supabase RLS policies must be explicitly created for each operation type
-- Environment variables must be properly formatted (KEY=value) in .env.local
+- Supabase RLS policies must be explicitly set for each operation
+- Environment variables must follow KEY=value format exactly
 - Graceful API fallbacks are better UX than hard failures
 
 **Blockers / what I'm stuck on:**
-- Anthropic API needs credits to generate real summaries — fallback working for now
-- Need to write all required markdown files before deadline
+- Anthropic API needs credits for real AI summaries — fallback working for now
+- User interviews pending — waiting for 3 people to respond
 
 **Plan for tomorrow:**
-- Set up CI/CD with GitHub Actions
-- Write minimum 5 tests for the audit engine
-- Start writing required markdown files (README, ARCHITECTURE, PRICING_DATA)
-- Message 3 people for user interviews
+- Move markdown files to repo root (required by assignment)
+- Fill in USER_INTERVIEWS.md when people respond
+- Verify live Vercel URL works end-to-end
+- Add screenshots to README.md

@@ -1,0 +1,15 @@
+2026-05-21 docs: add all required markdown files - README, ARCHITECTURE, PRICING_DATA, PROMPTS, GTM, ECONOMICS, TESTS, LANDING_COPY, METRICS, REFLECTION, USER_INTERVIEWS
+2026-05-21 test: add 7 audit engine tests, CI/CD pipeline, and Jest config
+2026-05-21 docs: add Day 3 DEVLOG entry
+2026-05-21 fix: improve mobile layout for tool row inputs
+2026-05-21 feat: add Anthropic AI summary with graceful fallback
+2026-05-21 feat: add shareable audit URL with OG tags and public results page
+2026-05-21 feat: connect audit engine to Supabase, fix env variables
+2026-05-21 feat: polish UI styling across form, results, and lead capture
+2026-05-20 feat: add audit results page and inline form validation
+2026-05-20 feat: apply dark theme styling to form and tool rows
+2026-05-20 feat: build audit engine and connect form to results
+2026-05-20 feat: style landing page with dark theme and improve form UI
+2026-05-20 feat: add TypeScript types, pricing data structure, and project scaffolding
+2026-05-20 feat: scaffold Next.js 14 with TypeScript, Tailwind, and App Router
+2026-05-20 Initial commit
