@@ -35,19 +35,20 @@ export function ToolRow({ entry, index, onChange, onRemove }: ToolRowProps) {
       background: "rgba(255,255,255,0.04)",
       border: "1px solid rgba(255,255,255,0.08)",
       borderRadius: "12px",
-      padding: "16px 20px",
+      padding: "16px",
       position: "relative",
       marginBottom: "10px",
     }}>
       <button
         onClick={() => onRemove(index)}
-        style={{ position: "absolute", top: "14px", right: "14px", background: "none", border: "none", cursor: "pointer", color: "#475569", padding: "2px" }}
+        style={{ position: "absolute", top: "12px", right: "12px", background: "none", border: "none", cursor: "pointer", color: "#475569", padding: "2px" }}
         aria-label="Remove"
       >
         <X size={14} />
       </button>
 
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "14px", marginBottom: "14px" }}>
+      {/* Row 1: Tool and Plan */}
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px", marginBottom: "12px" }}>
         <div>
           <p style={{ color: "#64748b", fontSize: "11px", fontWeight: 500, marginBottom: "6px", textTransform: "uppercase", letterSpacing: "0.05em" }}>Tool</p>
           <Select value={entry.tool} onValueChange={handleToolChange}>
@@ -76,9 +77,10 @@ export function ToolRow({ entry, index, onChange, onRemove }: ToolRowProps) {
         </div>
       </div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "14px" }}>
+      {/* Row 2: Spend and Seats — equal columns */}
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
         <div>
-          <p style={{ color: "#64748b", fontSize: "11px", fontWeight: 500, marginBottom: "6px", textTransform: "uppercase", letterSpacing: "0.05em" }}>Monthly Spend ($)</p>
+          <p style={{ color: "#64748b", fontSize: "11px", fontWeight: 500, marginBottom: "6px", textTransform: "uppercase", letterSpacing: "0.05em" }}>Spend ($)</p>
           <Input
             type="text" inputMode="numeric"
             value={entry.monthlySpend === 0 ? "" : String(entry.monthlySpend)}
