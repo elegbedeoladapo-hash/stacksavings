@@ -115,28 +115,33 @@
 
 ## Day 4 — 2026-05-22
 
-**Hours worked:** 5
+**Hours worked:** 7
 
 **What I did:**
 - Fixed CI pipeline — resolved lint errors and missing ts-node dependency
 - CI now shows green checkmark on every push
 - Moved all required markdown files to repo root
 - Deleted accidental file created in repo root
-- Verified Vercel deployment is live and working
 - Fixed audit savings calculation bug — was showing negative savings when seats exceeded team size
-- Removed persistent form storage — form now resets cleanly on every page reload
+- Restored form state persistence across page reloads using localStorage
 - Updated failing test to match new savings calculation logic — 7 tests passing
 - Added screenshots to README.md — landing page, results page, shareable URL
+- Installed Resend and built transactional email feature
+- Users now receive a confirmation email after submitting their email on the results page
+- Email includes savings summary, Credex CTA for high-savings cases, and link to full audit report
+- Added RESEND_API_KEY to Vercel environment variables and redeployed
+- Tested end-to-end on live site — email lands in inbox, not spam
 
 **What I learned:**
-- savings calculation must use expected spend (pricePerSeat × seats) not user-entered spend
-- localStorage persistence feels helpful but actually confuses users who expect a fresh form
-- Always run tests after changing core business logic
+- Savings calculation must use expected spend (pricePerSeat × seats) not user-entered spend
+- localStorage persistence is required by the assignment spec — always re-read requirements before removing features
+- Resend free tier works perfectly for transactional email — no domain required to start
+- Always test on the live Vercel URL after adding new environment variables
 
 **Blockers / what I'm stuck on:**
-- Nothing blocking — project is in good shape
+- Nothing blocking — all 6 MVP features are now complete
 
 **Plan for tomorrow:**
 - Write Day 5 DEVLOG entry
-- Final review of all markdown files before submission
-- Confirm live URL still working
+- Final review of all files before submission
+- Confirm live URL still working end to end
