@@ -23,12 +23,21 @@ export function LeadCapture({ auditId, totalMonthlySavings, isOptimal }: LeadCap
     setLoading(true)
     setError(null)
     try {
+      // Save lead to Supabase
       const response = await fetch("/api/leads", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, companyName, role, auditId, website }),
       })
       if (!response.ok) throw new Error("Failed")
+
+      // Send confirmation email
+      await fetch("/api/email", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, totalMonthlySavings, isOptimal, auditId }),
+      })
+
       setSubmitted(true)
     } catch {
       setError("Something went wrong. Please try again.")
@@ -43,7 +52,7 @@ export function LeadCapture({ auditId, totalMonthlySavings, isOptimal }: LeadCap
         <p style={{ fontSize: "28px", marginBottom: "8px" }}>🎉</p>
         <h3 style={{ color: "white", fontWeight: 600, marginBottom: "6px" }}>You're all set!</h3>
         <p style={{ color: "#64748b", fontSize: "14px" }}>
-          We've saved your audit report.
+          We've saved your audit report and sent a confirmation to {email}.
           {totalMonthlySavings >= 500 && " Our team will reach out about maximizing your savings with Credex."}
         </p>
       </div>
