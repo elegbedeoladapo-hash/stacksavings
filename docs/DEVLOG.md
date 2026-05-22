@@ -86,3 +86,29 @@
 - Fill in USER_INTERVIEWS.md when people respond
 - Verify live Vercel URL works end-to-end
 - Add screenshots to README.md
+
+## Day 4 — 2026-05-22
+
+**Hours worked:** 3
+
+**What I did:**
+- Fixed CI pipeline — resolved lint errors and missing ts-node dependency
+- CI now shows green checkmark on every push
+- Moved all required markdown files to repo root
+- Deleted accidental file created in repo root
+- Verified Vercel deployment is live and working
+
+**What I learned:**
+- ESLint rules must be explicitly disabled in config if they cause CI failures
+- ts-node must be installed as a dev dependency for Jest TypeScript config
+- GitHub Actions CI is strict — warnings are fine but errors fail the build
+
+**Blockers / what I'm stuck on:**
+- Waiting for 3 user interview responses
+- Need to add screenshots to README.md
+
+**Plan for tomorrow:**
+- Fill in USER_INTERVIEWS.md when people respond
+- Add screenshots to README.md
+- Write Day 5 DEVLOG
+- Final polish before submission
