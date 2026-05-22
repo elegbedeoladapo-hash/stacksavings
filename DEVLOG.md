@@ -112,3 +112,31 @@
 - Add screenshots to README.md
 - Write Day 5 DEVLOG
 - Final polish before submission
+
+## Day 4 — 2026-05-22
+
+**Hours worked:** 5
+
+**What I did:**
+- Fixed CI pipeline — resolved lint errors and missing ts-node dependency
+- CI now shows green checkmark on every push
+- Moved all required markdown files to repo root
+- Deleted accidental file created in repo root
+- Verified Vercel deployment is live and working
+- Fixed audit savings calculation bug — was showing negative savings when seats exceeded team size
+- Removed persistent form storage — form now resets cleanly on every page reload
+- Updated failing test to match new savings calculation logic — 7 tests passing
+- Added screenshots to README.md — landing page, results page, shareable URL
+
+**What I learned:**
+- savings calculation must use expected spend (pricePerSeat × seats) not user-entered spend
+- localStorage persistence feels helpful but actually confuses users who expect a fresh form
+- Always run tests after changing core business logic
+
+**Blockers / what I'm stuck on:**
+- Nothing blocking — project is in good shape
+
+**Plan for tomorrow:**
+- Write Day 5 DEVLOG entry
+- Final review of all markdown files before submission
+- Confirm live URL still working
