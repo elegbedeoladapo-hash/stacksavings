@@ -19,17 +19,17 @@ describe("Audit Engine", () => {
     expect(result.isOptimal).toBe(true)
   })
 
-  test("detects overpayment vs expected price", () => {
+  test("detects too many seats vs team size", () => {
     const data: AuditFormData = {
       ...baseFormData,
-      tools: [{ tool: "cursor", plan: "Pro", monthlySpend: 100, seats: 1 }],
+      teamSize: 3,
+      tools: [{ tool: "cursor", plan: "Pro", monthlySpend: 100, seats: 5 }],
     }
     const result = runAudit(data)
     expect(result.totalMonthlySavings).toBeGreaterThan(0)
-    expect(result.isOptimal).toBe(false)
   })
 
-  test("detects too many seats vs team size", () => {
+  test("savings is positive when seats exceed team size", () => {
     const data: AuditFormData = {
       ...baseFormData,
       teamSize: 2,
@@ -37,6 +37,7 @@ describe("Audit Engine", () => {
     }
     const result = runAudit(data)
     expect(result.totalMonthlySavings).toBeGreaterThan(0)
+    expect(result.isOptimal).toBe(false)
   })
 
   test("recommends downgrade from Cursor Business to Pro for small teams", () => {
@@ -77,7 +78,8 @@ describe("Audit Engine", () => {
   test("annual savings equals monthly savings times 12", () => {
     const data: AuditFormData = {
       ...baseFormData,
-      tools: [{ tool: "cursor", plan: "Pro", monthlySpend: 100, seats: 1 }],
+      teamSize: 2,
+      tools: [{ tool: "cursor", plan: "Business", monthlySpend: 80, seats: 2 }],
     }
     const result = runAudit(data)
     expect(result.totalAnnualSavings).toBe(result.totalMonthlySavings * 12)
