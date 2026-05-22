@@ -8,7 +8,14 @@ StackSavings is a free web app that audits your team's AI tool spending and show
 
 ## Screenshots
 
-> Add 3 screenshots here before submission — form, results page, shareable URL page
+### Landing Page
+![Landing Page](docs/screenshots/landing.png)
+
+### Results Page
+![Results Page](docs/screenshots/Results.png)
+
+### Shareable Audit URL
+![Shareable URL](docs/screenshots/sharerable.png)
 
 ---
 
