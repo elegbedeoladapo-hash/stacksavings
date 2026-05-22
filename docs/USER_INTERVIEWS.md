@@ -75,7 +75,7 @@ ChatGPT Plus feels unnecessary half the time they suspected the free version mig
 **What it changed about the design:**
 The "free" skepticism is real. This confirmed that the "No login required, free forever" messaging on the landing page needs to be prominent and credible users are conditioned to distrust free tools.
 
-## Interview 3 — Boluwatife, Product Designer (LinkedIn)
+## Interview 3 — Boluwatife, Product Designer (Whatsapp)
 
 **Role:** Product Designer
 **Company stage:** Design/product team
@@ -87,7 +87,7 @@ The "free" skepticism is real. This confirmed that the "No login required, free 
 
 **Question 2: What's your startup's monthly AI tool spending look like, about?**
 
-"Truth is, I can't name the precise count for everyone on the team - tracking just isn't happening the way it should, and that gap? That's where things fall apart."
+"Truth is, I can't name the precise count for everyone on the team tracking just isn't happening the way it should, and that gap? That's where things fall apart."
 
 **Question 3: Ever wonder if every dollar spent on AI actually pays off, yet a few just sit there unused?**
 
@@ -102,7 +102,7 @@ The "free" skepticism is real. This confirmed that the "No login required, free 
 "Shouldn't have to link every account just to use it. That kind of access makes me uneasy. Still, the core thought? Absolutely necessary. Right now, zero clarity on what our group spends overall."
 
 **Most surprising thing they said:**
-"Zero clarity on what our group spends overall" — a product designer at a functioning team has no idea what their total AI spend is. This isn't a startup problem, it's a visibility problem that affects every team regardless of size.
+"Zero clarity on what our group spends overall a product designer at a functioning team has no idea what their total AI spend is. This isn't a startup problem, it's a visibility problem that affects every team regardless of size.
 
 **What it changed about the design:**
-Boluwatife's concern about "linking every account" confirmed that StackSavings must never ask for API keys or account access — just self-reported spend numbers. The manual input approach is the right call. Privacy and simplicity over accuracy.
+Boluwatife's concern about "linking every account" confirmed that StackSavings must never ask for API keys or account access ust self-reported spend numbers. The manual input approach is the right call. Privacy and simplicity over accuracy.
