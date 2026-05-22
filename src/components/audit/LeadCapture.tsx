@@ -1,7 +1,6 @@
 "use client"
 
 import { useState } from "react"
-import { LeadData } from "@/types"
 
 interface LeadCaptureProps {
   auditId: string
