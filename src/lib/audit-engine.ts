@@ -1,12 +1,10 @@
 import { AuditFormData, AuditResult, ToolRecommendation, ToolName } from "@/types"
 import { PRICING_DATA } from "./pricing-data"
 
-// Generate a unique ID for each audit
 function generateId(): string {
   return Math.random().toString(36).substring(2, 15)
 }
 
-// Core audit logic for each tool
 function auditTool(
   tool: ToolName,
   plan: string,
@@ -35,10 +33,11 @@ function auditTool(
 
   // Rule 2: Too many seats vs team size
   if (seats > teamSize && teamSize > 0) {
+    const currentActualSpend = pricePerSeat * seats
     const rightSizeSpend = pricePerSeat * teamSize
     recommendedAction = `Reduce from ${seats} seats to ${teamSize} seats`
     estimatedNewSpend = rightSizeSpend
-    reason = `You're paying for ${seats} seats but your team is only ${teamSize} people. Reducing saves $${monthlySpend - rightSizeSpend}/mo.`
+    reason = `You're paying for ${seats} seats but your team is only ${teamSize} people. Reducing saves $${currentActualSpend - rightSizeSpend}/mo.`
   }
 
   // Rule 3: Tool-specific recommendations
@@ -94,7 +93,7 @@ function auditTool(
     }
   }
 
-  const monthlySavings = Math.max(0, monthlySpend - estimatedNewSpend)
+  const monthlySavings = Math.max(0, expectedSpend - estimatedNewSpend)
   const annualSavings = monthlySavings * 12
 
   return {
@@ -110,7 +109,6 @@ function auditTool(
   }
 }
 
-// Main audit function
 export function runAudit(formData: AuditFormData): AuditResult {
   const recommendations: ToolRecommendation[] = formData.tools.map((entry) =>
     auditTool(

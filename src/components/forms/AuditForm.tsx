@@ -1,13 +1,11 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import { AuditFormData, ToolEntry, ToolName } from "@/types"
 import { ToolRow } from "./ToolRow"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Input } from "@/components/ui/input"
 import { AlertCircle, Plus } from "lucide-react"
-
-const STORAGE_KEY = "stacksavings_form_data"
 
 const defaultTool: ToolEntry = {
   tool: "cursor" as ToolName,
@@ -29,17 +27,6 @@ interface AuditFormProps {
 export function AuditForm({ onSubmit }: AuditFormProps) {
   const [formData, setFormData] = useState<AuditFormData>(defaultFormData)
   const [error, setError] = useState<string | null>(null)
-
-  useEffect(() => {
-    const saved = localStorage.getItem(STORAGE_KEY)
-    if (saved) {
-      try { setFormData(JSON.parse(saved)) } catch {}
-    }
-  }, [])
-
-  useEffect(() => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(formData))
-  }, [formData])
 
   const handleToolChange = (index: number, updated: ToolEntry) => {
     const tools = [...formData.tools]
