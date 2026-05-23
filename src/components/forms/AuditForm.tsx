@@ -98,7 +98,6 @@ export function AuditForm({ onSubmit }: AuditFormProps) {
       border: "1px solid rgba(255,255,255,0.1)",
       borderRadius: "20px",
       padding: "36px",
-      backdropFilter: "blur(20px)",
     }}>
       <h2 style={{ color: "white", fontSize: "20px", fontWeight: 700, marginBottom: "4px" }}>
         Audit Your AI Spend

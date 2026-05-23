@@ -34,16 +34,6 @@ export default function Home() {
     <main className="min-h-screen relative overflow-hidden"
       style={{ background: "linear-gradient(135deg, #020817 0%, #0a1628 50%, #020817 100%)" }}>
 
-      {/* Ambient glow */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-40 left-1/2 -translate-x-1/2 w-[800px] h-[500px] rounded-full opacity-20 blur-3xl"
-          style={{ background: "radial-gradient(ellipse, #10b981 0%, transparent 70%)" }} />
-        <div className="absolute top-1/2 -left-40 w-80 h-80 rounded-full opacity-10 blur-3xl"
-          style={{ background: "radial-gradient(circle, #6366f1, transparent)" }} />
-        <div className="absolute top-1/2 -right-40 w-80 h-80 rounded-full opacity-10 blur-3xl"
-          style={{ background: "radial-gradient(circle, #0ea5e9, transparent)" }} />
-      </div>
-
       <div style={{ maxWidth: "720px", margin: "0 auto", padding: "64px 24px", position: "relative", zIndex: 10 }}>
         <div className="space-y-10">
 
@@ -89,7 +79,7 @@ export default function Home() {
 
                 <p style={{ color: "#94a3b8", fontSize: "16px", lineHeight: 1.7, maxWidth: "480px", margin: "0 auto 20px" }}>
                   Enter what your team pays for AI tools. Get an instant audit
-                  showing exactly where you're overspending and how to fix it.
+                  showing exactly where you are overspending and how to fix it.
                 </p>
 
                 <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: "20px", marginBottom: "8px" }}>
