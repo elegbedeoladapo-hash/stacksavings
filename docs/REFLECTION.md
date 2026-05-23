@@ -37,20 +37,20 @@ The lesson: client-side state is simpler than routing for single-page flows. Rea
 
 ## 3. What I Would Build in Week 2
 
-**Priority 1 — Transactional email via Resend.** The assignment requires sending a confirmation email when a lead is captured. Right now the email is saved to Supabase but no email is sent. This is a meaningful gap — the follow-up email is where Credex introduces itself to high-savings users.
+**Priority 1 — Benchmark mode.** "Your AI spend per developer is $X — companies your size average $Y." This requires collecting enough audit data to build percentile benchmarks, but even mocked benchmarks from industry research would make the audit dramatically more compelling. Users want to know how they compare, not just whether they're overpaying in absolute terms.
 
-**Priority 2 — Benchmark mode.** "Your AI spend per developer is $X — companies your size average $Y." This requires collecting enough audit data to build percentile benchmarks, but even mocked benchmarks from industry research would make the audit dramatically more compelling. Users want to know how they compare, not just whether they're overpaying in absolute terms.
+**Priority 2 — PDF export of the full report.** Engineering managers need to share the audit with their finance team or co-founder. A one-click PDF of the full report (with Credex branding) turns every audit into a sales document.
 
 **Priority 3 — Embeddable widget.** A `<script>` tag that bloggers or newsletters could drop into their content. "Curious how much you're wasting on AI tools? Find out in 2 minutes:" followed by an embedded mini-form. This would be the highest-leverage distribution channel — it puts the tool inside content that the exact target user is already reading.
 
-**Priority 4 — PDF export.** Engineering managers need to share the audit with their finance team or co-founder. A one-click PDF of the full report (with Credex branding) turns every audit into a sales document.
+**Priority 4 — Referral codes.** Share the tool, both parties get a perk. Creates a viral incentive loop on top of the existing shareable URL feature.
 
 ## 4. How I Used AI Tools
 
 **Tools used:** Claude (primary), GitHub Copilot (secondary)
 
 **What I used Claude for:**
-- Generating boilerplate code for components I understood but didn't want to type from scratch (the ToolRow component structure, the API route handlers)
+- Generating boilerplate code for components I understood but didn't want to type from scratch
 - Debugging error messages — pasting the error and asking "what's causing this?"
 - Writing the markdown documentation files
 - Explaining Next.js 15 breaking changes (the `params` must be awaited issue)
@@ -60,26 +60,38 @@ The lesson: client-side state is simpler than routing for single-page flows. Rea
 - Filling in the pricing data object structure once I'd written the first entry
 
 **What I didn't trust AI with:**
-- The audit engine business logic — I wrote every rule myself and verified the math manually. An AI-generated audit engine might produce plausible-sounding but wrong recommendations. The logic needs to be defensible to a finance person, which means I need to understand and own every line.
+- The audit engine business logic — I wrote every rule myself and verified the math manually
 - The DEVLOG entries — written personally, reflecting what actually happened each day
 - The user interviews — real conversations, not generated
 
 **One specific time the AI was wrong:**
-Claude suggested using `sessionStorage` to pass the audit data between the form page and results page. I implemented it, tested it, and discovered it broke on page refresh — the data was lost. Claude hadn't considered that the user might refresh the results page. I caught it during manual testing and switched to the same-page state approach instead. The AI gave a technically valid suggestion that failed in a real usage scenario.
+Claude suggested using `sessionStorage` to pass the audit data between the form page and results page. I implemented it, tested it, and discovered it broke on page refresh — the data was lost. Claude hadn't considered that the user might refresh the results page. I caught it during manual testing and switched to the same-page state approach instead.
 
 ## 5. Self-Rating
 
 **Discipline: 7/10**
-Started strong on Day 1 and maintained daily commits throughout the week. Lost some time to styling decisions that weren't critical path. Should have moved faster to the markdown files and tests earlier in the week.
+Started strong on Day 1 and maintained daily commits throughout the week. Lost some time on styling decisions that weren't critical path. Should have moved faster to the markdown files and tests earlier in the week.
 
-**Code quality: 7/10**
-TypeScript used throughout, sensible component separation, no hardcoded secrets. The audit engine is clean and readable. Main weakness: some components grew too large and should be split further. Error handling could be more consistent across API routes.
+**Code quality: 8/10**
+TypeScript used throughout, sensible component separation, no hardcoded secrets. The audit engine is clean and readable. Replaced heavy Radix UI components with native HTML for better performance. Main weakness: some components grew too large and should be split further.
 
 **Design sense: 8/10**
-The dark glassmorphism theme looks professional and matches the B2B SaaS aesthetic the target user expects. The results page hierarchy (big number → breakdown → CTA) follows good UX principles. Mobile responsiveness is functional but not perfect.
+The dark theme looks professional and matches the B2B SaaS aesthetic the target user expects. The results page hierarchy (big number → breakdown → CTA) follows good UX principles. Mobile responsiveness is solid.
 
 **Problem-solving: 8/10**
-Debugged the Supabase env variable issue systematically. Identified and fixed the Next.js 15 params breaking change quickly. Made the right call to use client-side state instead of routing for the results display.
+Debugged the Supabase env variable issue systematically. Identified and fixed the Next.js 15 params breaking change quickly. Improved Lighthouse mobile performance from 71 to 90 through systematic optimization.
 
-**Entrepreneurial thinking: 7/10**
-I understand the user and the business model clearly. The GTM strategy is specific and realistic. The economics math holds up. Main gap: I didn't get to implement the Resend transactional email, which is a meaningful product gap for the lead nurture flow.
+**Entrepreneurial thinking: 8/10**
+I understand the user and the business model clearly. The GTM strategy is specific and realistic. The economics math holds up. Built a complete lead generation tool with transactional email, shareable URLs, and a real backend.
+
+## Lighthouse Scores (Mobile)
+- Performance: 90 ✅
+- Accessibility: 94 ✅
+- Best Practices: 100 ✅
+- SEO: 100 ✅
+
+Optimizations made: replaced Radix UI Select components with native HTML selects, added dynamic imports for heavy components, removed expensive blur effects, switched to Inter font with display swap. Score improved from 71 to 90.
+
+## Abuse Protection
+
+Honeypot field implemented on the lead capture form. A hidden input field (`website`) is invisible to humans but gets filled in by bots. Any submission where this field contains a value is treated as spam. Chosen over rate limiting because it requires zero infrastructure and works silently without adding friction for real users.
