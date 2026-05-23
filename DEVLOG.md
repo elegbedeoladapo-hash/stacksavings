@@ -89,32 +89,6 @@
 
 ## Day 4 — 2026-05-22
 
-**Hours worked:** 3
-
-**What I did:**
-- Fixed CI pipeline — resolved lint errors and missing ts-node dependency
-- CI now shows green checkmark on every push
-- Moved all required markdown files to repo root
-- Deleted accidental file created in repo root
-- Verified Vercel deployment is live and working
-
-**What I learned:**
-- ESLint rules must be explicitly disabled in config if they cause CI failures
-- ts-node must be installed as a dev dependency for Jest TypeScript config
-- GitHub Actions CI is strict — warnings are fine but errors fail the build
-
-**Blockers / what I'm stuck on:**
-- Waiting for 3 user interview responses
-- Need to add screenshots to README.md
-
-**Plan for tomorrow:**
-- Fill in USER_INTERVIEWS.md when people respond
-- Add screenshots to README.md
-- Write Day 5 DEVLOG
-- Final polish before submission
-
-## Day 4 — 2026-05-22
-
 **Hours worked:** 7
 
 **What I did:**
@@ -145,3 +119,28 @@
 - Write Day 5 DEVLOG entry
 - Final review of all files before submission
 - Confirm live URL still working end to end
+
+## Day 5 — 2026-05-23
+
+**Hours worked:** 3
+
+**What I did:**
+- Final review of all 6 MVP features on live site
+- Confirmed transactional email working end-to-end on stacksavings.vercel.app
+- Confirmed form state persists across page reloads
+- Confirmed shareable URL loads correctly from Supabase
+- Reviewed all markdown files at repo root for completeness
+- Documented honeypot abuse protection in REFLECTION.md
+
+**What I learned:**
+- Next.js fullstack development covers both frontend and backend responsibilities
+- A honeypot field is the simplest abuse protection — no infrastructure needed, zero friction for real users
+- Reading the assignment requirements carefully after building reveals small gaps worth fixing
+
+**Blockers / what I'm stuck on:**
+- Nothing blocking — product is complete and live
+
+**Plan for tomorrow:**
+- Write Day 6 DEVLOG entry
+- Final check of git history to confirm commits on 5+ distinct days
+- Prepare GitHub repo URL and live URL for submission on May 27
