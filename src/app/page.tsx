@@ -1,10 +1,17 @@
 "use client"
 
 import { useState } from "react"
-import { AuditForm } from "@/components/forms/AuditForm"
-import { AuditResults } from "@/components/audit/AuditResults"
+import dynamic from "next/dynamic"
 import { AuditFormData, AuditResult } from "@/types"
 import { runAudit } from "@/lib/audit-engine"
+
+const AuditForm = dynamic(() => import("@/components/forms/AuditForm").then(m => m.AuditForm), {
+  loading: () => <div style={{ height: "400px" }} />,
+})
+
+const AuditResults = dynamic(() => import("@/components/audit/AuditResults").then(m => m.AuditResults), {
+  loading: () => <div style={{ height: "400px" }} />,
+})
 
 export default function Home() {
   const [auditResult, setAuditResult] = useState<AuditResult | null>(null)
@@ -12,7 +19,6 @@ export default function Home() {
   const handleSubmit = async (data: AuditFormData) => {
     const result = runAudit(data)
     setAuditResult(result)
-    // Save to Supabase in background — don't block the UI
     try {
       await fetch("/api/audit", {
         method: "POST",
@@ -20,7 +26,7 @@ export default function Home() {
         body: JSON.stringify(result),
       })
     } catch {
-      // fail silently — audit still works without saving
+      // fail silently
     }
   }
 
